@@ -91,6 +91,8 @@ mv %{buildroot}%{gem_instdir}/fluent.conf %{buildroot}%{_sysconfdir}/%{gem_name}
 mkdir -p %{buildroot}%{_unitdir}
 install -p -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/
 
+install -m 0700 -d  %{buildroot}%{_localstatedir}/cache/fluentd
+
 rm -f %{buildroot}%{gem_instdir}/{.gitignore,.travis.yml}
 
 # Run the test suite
@@ -116,6 +118,7 @@ popd
 %{gem_spec}
 %dir %{_sysconfdir}/%{gem_name}
 %config(noreplace) %{_sysconfdir}/%{gem_name}/fluent.conf
+%dir %{_localstatedir}/cache/fluentd
 %doc %{gem_instdir}/AUTHORS
 %doc %{gem_instdir}/CONTRIBUTING.md
 %doc %{gem_instdir}/COPYING
