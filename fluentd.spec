@@ -1,70 +1,68 @@
 # Generated from fluentd-0.12.2.gem by gem2rpm -*- rpm-spec -*-
 %global gem_name fluentd
 
-%define fluentd_user		fluentd
-%define fluentd_group		%{fluentd_user}
+%define fluentd_user	fluentd
+%define fluentd_group	%{fluentd_user}
 
-%define fluentd_log_dir		%{_localstatedir}/log/fluentd
+%define fluentd_log_dir	%{_localstatedir}/log/fluentd
 %define fluentd_buffer_dir	%{_localstatedir}/spool/fluentd/buffer
-%define fluentd_pos_dir		%{_localstatedir}/spool/fluentd/pos
+%define fluentd_pos_dir	%{_localstatedir}/spool/fluentd/pos
 
-Name:    		%{gem_name}
-Version: 		0.14.8
-Release: 		1%{?dist}
-Summary: 		Fluentd event collector
-Group:   		Development/Languages
-License: 		ASL 2.0
-URL:     		http://fluentd.org/
-Source0: 		https://rubygems.org/gems/%{gem_name}-%{version}.gem
-Source1: 		fluentd.service
-Source2: 		fluentd.logrotate
+Name:		%{gem_name}
+Version:	0.14.8
+Release:	1%{?dist}
+Summary:	Fluentd event collector
+Group:		Development/Languages
+License:	ASL 2.0
+URL:		http://fluentd.org/
+Source0:	https://rubygems.org/gems/%{gem_name}-%{version}.gem
+Source1:	fluentd.service
+Source2:	fluentd.logrotate
 
-BuildRequires:		systemd
-BuildRequires:  	rubygems-devel
-BuildRequires:  	ruby >= 1.9.3
-BuildRequires:  	rubygem(thread_safe)
-
+BuildRequires:	systemd
+BuildRequires:	rubygems-devel
+BuildRequires:	ruby >= 1.9.3
+BuildRequires:	rubygem(thread_safe)
 ## Unit tests requires:
-BuildRequires:  	rubygem(test-unit)
-BuildRequires:  	rubygem(rr)
-BuildRequires:  	rubygem(test-unit-rr)
-BuildRequires:		procps-ng
-BuildRequires:		hostname
-BuildRequires:		rubygem(yajl-ruby) >= 1.0
-BuildRequires:		rubygem(serverengine) >= 2.0
-BuildRequires:		rubygem(cool.io) >= 1.4.5
-BuildRequires:  	rubygem(msgpack) >= 0.7.0
-BuildRequires:		rubygem(strptime) >= 0.1.7
-BuildRequires:  	rubygem(tzinfo) >= 1.0
-BuildRequires:  	rubygem(flexmock) >= 2.0
-BuildRequires:  	rubygem(timecop) >= 0.3
-BuildRequires:	 	rubygem(http_parser.rb) >= 0.5.1
-BuildRequires:		rubygem(simplecov) >= 0.7
-BuildRequires:		rubygem(oj) >= 2.14
-BuildRequires:		rubygem(parallel_tests) >= 0.15.3
+BuildRequires:	rubygem(test-unit)
+BuildRequires:	rubygem(rr)
+BuildRequires:	rubygem(test-unit-rr)
+BuildRequires:	procps-ng
+BuildRequires:	hostname
+BuildRequires:	rubygem(yajl-ruby) >= 1.0
+BuildRequires:	rubygem(serverengine) >= 2.0
+BuildRequires:	rubygem(cool.io) >= 1.4.5
+BuildRequires:	rubygem(msgpack) >= 0.7.0
+BuildRequires:	rubygem(strptime) >= 0.1.7
+BuildRequires:	rubygem(tzinfo) >= 1.0
+BuildRequires:	rubygem(flexmock) >= 2.0
+BuildRequires:	rubygem(timecop) >= 0.3
+BuildRequires:	rubygem(http_parser.rb) >= 0.5.1
+BuildRequires:	rubygem(simplecov) >= 0.7
+BuildRequires:	rubygem(oj) >= 2.14
+BuildRequires:	rubygem(parallel_tests) >= 0.15.3
 
-Requires:			logrotate
-Requires:			rubygem(msgpack) >= 0.7.0
-Requires:			rubygem(yajl-ruby) >= 1.0
-Requires:			rubygem(cool.io) >= 1.4.5
-Requires:      	 	rubygem(http_parser.rb) >= 0.5.1
-Requires:			rubygem(sigdump) >= 0.2.2
-Requires:			rubygem(tzinfo) >= 1.0
-Requires:			rubygem(tzinfo-data) >= 1.0
-Requires:			rubygem(serverengine) >= 2.0
-Requires:			rubygem(strptime) >= 0.1.7
+Requires:	logrotate
+Requires:	rubygem(msgpack) >= 0.7.0
+Requires:	rubygem(yajl-ruby) >= 1.0
+Requires:	rubygem(cool.io) >= 1.4.5
+Requires:	rubygem(http_parser.rb) >= 0.5.1
+Requires:	rubygem(sigdump) >= 0.2.2
+Requires:	rubygem(tzinfo) >= 1.0
+Requires:	rubygem(tzinfo-data) >= 1.0
+Requires:	rubygem(serverengine) >= 2.0
+Requires:	rubygem(strptime) >= 0.1.7
 
 
 
-Provides:			%{gem_name} = %{version}
+Provides:	%{gem_name} = %{version}
 
 Requires(pre):		shadow-utils
-
 Requires(post):		systemd
 Requires(preun):	systemd
 Requires(postun):	systemd
 
-BuildArch: noarch
+BuildArch:	noarch
 
 %description
 Fluentd is an open source data collector designed to scale and simplify log
@@ -181,10 +179,10 @@ getent passwd %{fluentd_user} >/dev/null || \
 exit 0
 
 %post
-%systemd_post fluentd.service
+%systemd_post	fluentd.service
 
 %preun
-%systemd_preun fluentd.service
+%systemd_preun	fluentd.service
 
 %postun
 %systemd_postun	fluentd.service
