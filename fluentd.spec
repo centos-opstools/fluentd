@@ -1,46 +1,54 @@
 # Generated from fluentd-0.12.2.gem by gem2rpm -*- rpm-spec -*-
 %global gem_name fluentd
 
-Name:           %{gem_name}
-Version:        0.12.26
-Release:        2%{?dist}
-Summary:        Fluentd event collector
-Group:          Development/Languages
-License:        ASL 2.0
-URL:            http://fluentd.org/
-Source0:        https://rubygems.org/gems/%{gem_name}-%{version}.gem
-Source1:        fluentd.service
+Name: %{gem_name}
+Version: 0.12.31
+Release: 3%{?dist}
+Summary: Fluentd event collector
+Group: Development/Languages
+License: ASL 2.0
+URL: http://fluentd.org/
+Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
+Source1: fluentd.service
+# This was discussed, and dismissed upstream
+# https://github.com/fluent/fluentd/issues/76
+# Remove patch once upstream has implemented their own way of doing this
+Patch0: fluentd-0.12.29-fix-UTF-error.patch
 
-BuildRequires:  ruby(release)
-BuildRequires:  rubygems-devel
-BuildRequires:  ruby >= 1.9.3
-BuildRequires:  rubygem(test-unit)
-BuildRequires:  rubygem(rr)
-BuildRequires:  rubygem(test-unit-rr)
-BuildRequires:  rubygem(yajl-ruby)
-BuildRequires:  rubygem(msgpack)
-BuildRequires:  rubygem(sigdump)
-BuildRequires:  rubygem(cool.io)
-BuildRequires:  rubygem(tzinfo)
-BuildRequires:  rubygem(tzinfo-data)
-BuildRequires:  rubygem(http_parser.rb)
-BuildRequires:  rubygem(thread_safe)
-BuildRequires:  systemd
-
-Requires:       rubygem-msgpack
-Requires:       rubygem-yajl-ruby
-Requires:       rubygem-cool.io
-Requires:       rubygem-http_parser.rb
-Requires:       rubygem-sigdump
-Requires:       rubygem-tzinfo
-Requires:       rubygem-tzinfo-data
-Requires:       rubygem-thread_safe
-Requires:       rubygem-string-scrub
+BuildRequires: ruby(release)
+BuildRequires: rubygems-devel
+BuildRequires: ruby >= 1.9.3
+BuildRequires: rubygem(test-unit)
+BuildRequires: rubygem(rr)
+BuildRequires: rubygem(test-unit-rr)
+BuildRequires: rubygem(yajl-ruby)
+BuildRequires: rubygem(msgpack)
+BuildRequires: rubygem(sigdump)
+BuildRequires: rubygem(cool.io)
+BuildRequires: rubygem(tzinfo)
+BuildRequires: rubygem(tzinfo-data)
+BuildRequires: rubygem(http_parser.rb)
+BuildRequires: rubygem(thread_safe)
+BuildRequires: systemd
 
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
-
+Requires: rubygem(cool.io) >= 1.2.2
+Requires: rubygem(cool.io) < 2.0.0
+Requires: rubygem(http_parser.rb) >= 0.5.1
+Requires: rubygem(http_parser.rb) < 0.7.0
+Requires: rubygem(json) >= 1.4.3
+Requires: rubygem(msgpack) >= 0.5.11
+Requires: rubygem(msgpack) < 0.6.0
+Requires: rubygem(sigdump) >= 0.2.2
+Requires: rubygem(sigdump) < 0.3
+Requires: rubygem(string-scrub) >= 0.0.3
+Requires: rubygem(string-scrub) <= 0.0.5
+Requires: rubygem(tzinfo) >= 1.0.0
+Requires: rubygem(tzinfo-data) >= 1.0.0
+Requires: rubygem(yajl-ruby) >= 1.0
+Requires: rubygem(yajl-ruby) < 2
 BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
@@ -51,10 +59,10 @@ real-time.
 
 
 %package doc
-Summary:        Documentation for %{name}
-Group:          Documentation
-Requires:       %{name} = %{version}-%{release}
-BuildArch:      noarch
+Summary: Documentation for %{name}
+Group: Documentation
+Requires: %{name} = %{version}-%{release}
+BuildArch: noarch
 
 %description doc
 Documentation for %{name}.
@@ -65,6 +73,8 @@ gem unpack %{SOURCE0}
 %setup -q -D -T -n  %{gem_name}-%{version}
 
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
+
+%patch0 -p1
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -104,7 +114,7 @@ testrb2 -Ilib:test test/**/test_*.rb
 popd
 
 %files
-%defattr(-, fluentd, fluentd, -)
+%defattr(-, root, root, -)
 %dir %{gem_instdir}
 %attr(755, root, root) %{_bindir}/fluent-cat
 %attr(755, root, root) %{_bindir}/fluent-debug
@@ -117,12 +127,7 @@ popd
 %{gem_spec}
 %dir %{_sysconfdir}/%{gem_name}
 %config(noreplace) %{_sysconfdir}/%{gem_name}/fluent.conf
-%doc %{gem_instdir}/AUTHORS
-%doc %{gem_instdir}/CONTRIBUTING.md
-%doc %{gem_instdir}/COPYING
-%doc %{gem_instdir}/ChangeLog
-%doc %{gem_instdir}/Gemfile
-%doc %{gem_instdir}/README.md
+%license %{gem_instdir}/COPYING
 
 
 %files doc
@@ -131,13 +136,20 @@ popd
 %{gem_instdir}/test/
 %{gem_instdir}/%{gem_name}.gemspec
 %{gem_instdir}/example/*
+%doc %{gem_instdir}/AUTHORS
+%doc %{gem_instdir}/CONTRIBUTING.md
+%doc %{gem_instdir}/ChangeLog
+%doc %{gem_instdir}/Gemfile
+%doc %{gem_instdir}/README.md
 
 %pre
-getent group fluentd >/dev/null || groupadd -r fluentd
-getent passwd fluentd >/dev/null || \
-    useradd -r -g fluentd -d /etc/fluentd -s /sbin/nologin \
-    -c "Fluentd data collection agent" fluentd
-exit 0
+# NOTE(mmagr): httpd logs have 0700 mode now for root, so we need to run
+#              fluentd service as root to be able to collect all logs
+#getent group fluentd >/dev/null || groupadd -r fluentd
+#getent passwd fluentd >/dev/null || \
+#    useradd -r -g fluentd -d /etc/fluentd -s /sbin/nologin \
+#    -c "Fluentd data collection agent" fluentd
+#exit 0
 
 %post
 %systemd_post fluentd.service
@@ -149,23 +161,36 @@ exit 0
 %systemd_postun fluentd.service
 
 %changelog
-* Fri Mar 24 2017 Sandro Bonazzola <sbonazzo@redhat.com> - 0.12.26-2
-- reverted to 0.12.26 - copied other file to fluentd-0.14.spec
+* Mon Apr 10 2017 Lon Hohberger <lon@redhat.com> - 0.12.31-3
+- Fix %defattr line to match expected UID/GIDs (rhbz#1426169)
+
+* Tue Feb 28 2017 Martin Mágr <mmagr@redhat.com> - 0.12.31-2
+- Run fluentd service as root to be able to gather httpd logs (rhbz#1426169)
+
+* Mon Jan  9 2017 Rich Megginson <rmeggins@redhat.com> - 0.12.31-1
+- update to 0.12.31
+
+* Mon Dec 12 2016 Rich Megginson <rmeggins@redhat.com> - 0.12.30-1
+- update to 0.12.30
+
+* Tue Sep 20 2016 Rich Megginson <rmeggins@redhat.com> - 0.12.29-1
+- update to 0.12.29
+
+* Thu Aug 04 2016 Rich Megginson <rmeggins@redhat.com> - 0.12.20-2
 - Rebuild to add provides for rubygem(fluentd)
-- NOTE: fluentd 0.14 requires ruby >= 2.1, according to the latest
-- 0.14 gemspec:
--   gem.required_ruby_version = '>= 2.1'
-- EL7 only has ruby 2.0
-- so 0.14 is currently not usable on EL7 without SCL et. al.
 
-* Fri Oct 14 2016 Andrey Bardin <a15y87@gmail.com> - 0.14.8-1
-- Updated to upstream version 0.14.8
+* Fri Feb 05 2016 Troy Dawson <tdawson@redhat.com> - 0.12.20-1
+- Updated to latest release
 
-* Mon Oct 10 2016 Andrey Bardin <a15y87@gmail.com> - 0.14.7-1
-- Updated to upstream version 0.14.7
+* Fri Oct 16 2015 Troy Dawson <tdawson@redhat.com> - 0.12.16-1
+- Updated to latest release
+- Added patch to fix UTF error
 
-* Thu Jun 23 2016 Martin Mágr <mmagr@redhat.com> - 0.12.26-1
-- Updated to upstream version 0.12.26
+* Wed Sep 09 2015 Troy Dawson <tdawson@redhat.com> - 0.12.15-2
+- Add a provides to spec file
+
+* Mon Aug 31 2015 Troy Dawson <tdawson@redhat.com> - 0.12.15-1
+- Updated to latest release
 
 * Wed Jul 29 2015 Graeme Gillies <ggillies@redhat.com> - 0.12.5-3
 - Corrected ownership on executable files in /usr/bin

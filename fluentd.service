@@ -7,8 +7,8 @@ After=network.target
 Type=simple
 ExecStart=/usr/bin/fluentd -c /etc/fluentd/fluent.conf
 Restart=on-failure
-User=fluentd
-Group=fluentd
+User=root
+Group=root
 
 [Install]
 WantedBy=multi-user.target
