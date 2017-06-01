@@ -16,6 +16,24 @@
       "revId": "ac511a144e2a7a5bace8172092b38d3b1f8c051c",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa7fdbe_a9aeb1e5",
+        "filename": "fluentd.service",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 390
+      },
+      "writtenOn": "2017-06-01T11:31:24Z",
+      "side": 1,
+      "message": "It has moved to root user due to https://bugzilla.redhat.com/show_bug.cgi?id\u003d1426169\nIt has been already verified by Red Hat QE, and shipped live with https://access.redhat.com/errata/RHBA-2017:1246",
+      "parentUuid": "baa201ad_cbed9f8d",
+      "revId": "ac511a144e2a7a5bace8172092b38d3b1f8c051c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
