@@ -3,7 +3,7 @@
 
 Name: %{gem_name}
 Version: 0.12.31
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
 License: ASL 2.0
@@ -45,6 +45,7 @@ Requires: rubygem(sigdump) >= 0.2.2
 Requires: rubygem(sigdump) < 0.3
 Requires: rubygem(string-scrub) >= 0.0.3
 Requires: rubygem(string-scrub) <= 0.0.5
+Requires: rubygem(thread_safe)
 Requires: rubygem(tzinfo) >= 1.0.0
 Requires: rubygem(tzinfo-data) >= 1.0.0
 Requires: rubygem(yajl-ruby) >= 1.0
@@ -161,6 +162,9 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Thu Jun 15 2017 Sandro Bonazzola <sbonazzo@redhat.com> - 0.12.31-4
+- Add missing requirement on rubygem-thread_safe
+
 * Mon Apr 10 2017 Lon Hohberger <lon@redhat.com> - 0.12.31-3
 - Fix %defattr line to match expected UID/GIDs (rhbz#1426169)
 
