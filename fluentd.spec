@@ -50,6 +50,7 @@ Requires: rubygem(tzinfo) >= 1.0.0
 Requires: rubygem(tzinfo-data) >= 1.0.0
 Requires: rubygem(yajl-ruby) >= 1.0
 Requires: rubygem(yajl-ruby) < 2
+Requires: hostname
 BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
