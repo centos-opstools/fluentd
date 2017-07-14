@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa7fdbe_28a3769f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 80
+      },
+      "writtenOn": "2017-07-14T17:53:30Z",
+      "side": 1,
+      "message": "Do you have a bug number or a reason why hostname has to be added? I mean, it works for us now.",
+      "revId": "35f57dd83e9608555ef73ea96699dbae9e8b176f",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa7fdbe_089f9253",
+        "filename": "fluentd.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 80
+      },
+      "writtenOn": "2017-07-14T17:53:30Z",
+      "side": 1,
+      "message": "dependency",
+      "revId": "35f57dd83e9608555ef73ea96699dbae9e8b176f",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
