@@ -33,6 +33,29 @@
       "revId": "35f57dd83e9608555ef73ea96699dbae9e8b176f",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9aa7fdbe_a37949fe",
+        "filename": "fluentd.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 314
+      },
+      "writtenOn": "2017-07-18T12:07:44Z",
+      "side": 1,
+      "message": "Please be more verbose here, so it is clear why we are adding this dependency.",
+      "range": {
+        "startLine": 167,
+        "startChar": 2,
+        "endLine": 167,
+        "endChar": 33
+      },
+      "revId": "35f57dd83e9608555ef73ea96699dbae9e8b176f",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
