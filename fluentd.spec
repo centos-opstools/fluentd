@@ -2,8 +2,8 @@
 %global gem_name fluentd
 
 Name: %{gem_name}
-Version: 0.12.31
-Release: 5%{?dist}
+Version: 0.12.37
+Release: 2%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
 License: ASL 2.0
@@ -40,7 +40,7 @@ Requires: rubygem(http_parser.rb) >= 0.5.1
 Requires: rubygem(http_parser.rb) < 0.7.0
 Requires: rubygem(json) >= 1.4.3
 Requires: rubygem(msgpack) >= 0.5.11
-Requires: rubygem(msgpack) < 0.6.0
+Requires: rubygem(msgpack) < 2
 Requires: rubygem(sigdump) >= 0.2.2
 Requires: rubygem(sigdump) < 0.3
 Requires: rubygem(string-scrub) >= 0.0.3
@@ -163,6 +163,12 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Fri Jul 21 2017 Sandro Bonazzola <sbonazzo@redhat.com> - 0.12.37-2
+- Restored runtime dependency hostname lost during rebase on 0.12.37
+
+* Fri Jul 21 2017 Rich Megginson <rmeggins@redhat.com> - 0.12.37-1
+- version 0.12.37
+
 * Fri Jul 14 2017 Juan Badia Payno <jbadiapa@redhat.com> - 0.12.31-5
 - Add runtime dependency hostname,so this package can be used by
 other distros than CentOS
