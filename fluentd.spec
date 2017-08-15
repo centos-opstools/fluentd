@@ -2,8 +2,8 @@
 %global gem_name fluentd
 
 Name: %{gem_name}
-Version: 0.12.37
-Release: 2%{?dist}
+Version: 0.12.39
+Release: 1%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
 License: ASL 2.0
@@ -163,6 +163,9 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Tue Aug 15 2017 Rich Megginson <rmeggins@redhat.com> - 0.12.39-1
+- version 0.12.39
+
 * Fri Jul 21 2017 Sandro Bonazzola <sbonazzo@redhat.com> - 0.12.37-2
 - Restored runtime dependency hostname lost during rebase on 0.12.37
 
