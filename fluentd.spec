@@ -10,10 +10,6 @@ License: ASL 2.0
 URL: http://fluentd.org/
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 Source1: fluentd.service
-# This was discussed, and dismissed upstream
-# https://github.com/fluent/fluentd/issues/76
-# Remove patch once upstream has implemented their own way of doing this
-Patch0: fluentd-0.12.29-fix-UTF-error.patch
 
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
@@ -75,8 +71,6 @@ gem unpack %{SOURCE0}
 %setup -q -D -T -n  %{gem_name}-%{version}
 
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
-
-%patch0 -p1
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -163,6 +157,9 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Wed Aug 23 2017 Rich Megginson <rmeggins@redhat.com> - 0.12.39-2
+- remove utf-8 patch to allow file buffering to work
+
 * Tue Aug 15 2017 Rich Megginson <rmeggins@redhat.com> - 0.12.39-1
 - version 0.12.39
 
