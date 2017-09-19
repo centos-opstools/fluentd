@@ -3,7 +3,7 @@
 
 Name: %{gem_name}
 Version: 0.12.39
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
 License: ASL 2.0
