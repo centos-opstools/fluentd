@@ -2,8 +2,8 @@
 %global gem_name fluentd
 
 Name: %{gem_name}
-Version: 0.12.39
-Release: 2%{?dist}
+Version: 0.12.41
+Release: 1%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
 License: ASL 2.0
@@ -157,6 +157,9 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Thu Dec 07 2017 Richard Megginson <rmeggins@redhat.com> - 0.12.41-1
+- version 0.12.41
+
 * Wed Aug 23 2017 Rich Megginson <rmeggins@redhat.com> - 0.12.39-2
 - remove utf-8 patch to allow file buffering to work
 
