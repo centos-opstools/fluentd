@@ -2,8 +2,8 @@
 %global gem_name fluentd
 
 Name: %{gem_name}
-Version: 0.12.39
-Release: 2%{?dist}
+Version: 0.12.41
+Release: 1%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
 License: ASL 2.0
@@ -22,7 +22,6 @@ BuildRequires: rubygem(msgpack)
 BuildRequires: rubygem(sigdump)
 BuildRequires: rubygem(cool.io)
 BuildRequires: rubygem(tzinfo)
-BuildRequires: rubygem(tzinfo-data)
 BuildRequires: rubygem(http_parser.rb)
 BuildRequires: rubygem(thread_safe)
 BuildRequires: systemd
@@ -43,7 +42,6 @@ Requires: rubygem(string-scrub) >= 0.0.3
 Requires: rubygem(string-scrub) <= 0.0.5
 Requires: rubygem(thread_safe)
 Requires: rubygem(tzinfo) >= 1.0.0
-Requires: rubygem(tzinfo-data) >= 1.0.0
 Requires: rubygem(yajl-ruby) >= 1.0
 Requires: rubygem(yajl-ruby) < 2
 Requires: hostname
@@ -134,7 +132,7 @@ popd
 %{gem_instdir}/example/*
 %doc %{gem_instdir}/AUTHORS
 %doc %{gem_instdir}/CONTRIBUTING.md
-%doc %{gem_instdir}/ChangeLog
+%doc %{gem_instdir}/CHANGELOG.md
 %doc %{gem_instdir}/Gemfile
 %doc %{gem_instdir}/README.md
 
@@ -157,6 +155,9 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Thu Dec 07 2017 Richard Megginson <rmeggins@redhat.com> - 0.12.41-1
+- version 0.12.41
+
 * Wed Aug 23 2017 Rich Megginson <rmeggins@redhat.com> - 0.12.39-2
 - remove utf-8 patch to allow file buffering to work
 
