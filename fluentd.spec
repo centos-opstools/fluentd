@@ -1,15 +1,18 @@
 # Generated from fluentd-0.12.2.gem by gem2rpm -*- rpm-spec -*-
 %global gem_name fluentd
+%global jemalloc_name jemalloc
+%global jemalloc_ver 5.0.1
 
 Name: %{gem_name}
-Version: 0.12.41
-Release: 1%{?dist}
+Version: 0.12.42
+Release: 2%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
-License: ASL 2.0
+License: ASL 2.0 and BSD 2-clause
 URL: http://fluentd.org/
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 Source1: fluentd.service
+Source2: https://github.com/jemalloc/%{jemalloc_name}/releases/download/%{jemalloc_ver}/%{jemalloc_name}-%{jemalloc_ver}.tar.bz2
 
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
@@ -25,6 +28,8 @@ BuildRequires: rubygem(tzinfo)
 BuildRequires: rubygem(http_parser.rb)
 BuildRequires: rubygem(thread_safe)
 BuildRequires: systemd
+# jemalloc
+BuildRequires: gcc
 
 Requires(post): systemd
 Requires(preun): systemd
@@ -45,7 +50,6 @@ Requires: rubygem(tzinfo) >= 1.0.0
 Requires: rubygem(yajl-ruby) >= 1.0
 Requires: rubygem(yajl-ruby) < 2
 Requires: hostname
-BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
 %description
@@ -70,6 +74,8 @@ gem unpack %{SOURCE0}
 
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
+%setup -q -T -D -a 2
+
 %build
 # Create the gem as gem install only works on a gem file
 gem build %{gem_name}.gemspec
@@ -77,6 +83,12 @@ gem build %{gem_name}.gemspec
 # %%gem_install compiles any C extensions and installs the gem into ./%%gem_dir
 # by default, so that we can move it into the buildroot in %%install
 %gem_install
+
+cd %{jemalloc_name}-%{jemalloc_ver}
+%configure \
+        --libdir=%{_libexecdir}/%{name}/lib \
+        --bindir=%{_libexecdir}/%{name}/bin
+make
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
@@ -98,6 +110,11 @@ install -p -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/
 
 rm -f %{buildroot}%{gem_instdir}/{.gitignore,.travis.yml}
 
+cd %{jemalloc_name}-%{jemalloc_ver}
+make DESTDIR=%{buildroot} install_lib install_bin
+cp -pa COPYING %{buildroot}%{gem_instdir}/COPYING.jemalloc
+cp -pa README %{buildroot}%{gem_instdir}/README.jemalloc
+
 # Run the test suite
 %check
 pushd .%{gem_instdir}
@@ -116,6 +133,7 @@ popd
 %attr(755, root, root) %{_bindir}/fluentd
 %{gem_instdir}/bin
 %{gem_libdir}
+%{_libexecdir}/%{name}
 %attr(644, root, root) /%{_unitdir}/fluentd.service
 %exclude %{gem_cache}
 %{gem_spec}
@@ -131,10 +149,12 @@ popd
 %{gem_instdir}/%{gem_name}.gemspec
 %{gem_instdir}/example/*
 %doc %{gem_instdir}/AUTHORS
-%doc %{gem_instdir}/CONTRIBUTING.md
 %doc %{gem_instdir}/CHANGELOG.md
+%doc %{gem_instdir}/CONTRIBUTING.md
 %doc %{gem_instdir}/Gemfile
 %doc %{gem_instdir}/README.md
+%doc %{gem_instdir}/README.jemalloc
+%doc %{gem_instdir}/COPYING.jemalloc
 
 %pre
 # NOTE(mmagr): httpd logs have 0700 mode now for root, so we need to run
@@ -155,6 +175,13 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Wed Jan 10 2018 Sandro Bonazzola <sbonazzo@redhat.com> -  0.12.42-2
+- Dropped again tzinfo-data, not needed on linux systems.
+
+* Mon Dec 18 2017 Richard Megginson <rmeggins@redhat.com> - 0.12.42-1
+- version 0.12.42
+- add jemalloc
+
 * Thu Dec 07 2017 Richard Megginson <rmeggins@redhat.com> - 0.12.41-1
 - version 0.12.41
 
