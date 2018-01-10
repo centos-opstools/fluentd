@@ -5,7 +5,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/fluentd -c /etc/fluentd/fluent.conf
+ExecStart=/usr/bin/fluentd --no-supervisor -c /etc/fluentd/fluent.conf
 Restart=on-failure
 User=root
 Group=root

@@ -2,7 +2,7 @@
 %global gem_name fluentd
 
 Name: %{gem_name}
-Version: 0.12.41
+Version: 0.12.42
 Release: 2%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
@@ -25,6 +25,7 @@ BuildRequires: rubygem(tzinfo)
 BuildRequires: rubygem(http_parser.rb)
 BuildRequires: rubygem(thread_safe)
 BuildRequires: systemd
+BuildRequires: jemalloc
 
 Requires(post): systemd
 Requires(preun): systemd
@@ -45,6 +46,7 @@ Requires: rubygem(tzinfo) >= 1.0.0
 Requires: rubygem(yajl-ruby) >= 1.0
 Requires: rubygem(yajl-ruby) < 2
 Requires: hostname
+Requires: jemalloc
 BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
@@ -156,6 +158,10 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Tue Feb 13 2018 Sandro Bonazzola <sbonazzo@redhat.com> - 0.12.42-2
+- Rebase on 0.12.42
+- Require jemalloc
+
 * Fri Jan 19 2018 Sandro Bonazzola <sbonazzo@redhat.com> - 0.12.41-2
 - Remove tzinfo-data also from gem spec.
 
@@ -182,7 +188,7 @@ other distros than CentOS
 - Add missing requirement on rubygem-thread_safe
 
 * Mon Apr 10 2017 Lon Hohberger <lon@redhat.com> - 0.12.31-3
-- Fix %defattr line to match expected UID/GIDs (rhbz#1426169)
+- Fix %%defattr line to match expected UID/GIDs (rhbz#1426169)
 
 * Tue Feb 28 2017 Martin Mágr <mmagr@redhat.com> - 0.12.31-2
 - Run fluentd service as root to be able to gather httpd logs (rhbz#1426169)
