@@ -5,7 +5,8 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/fluentd -c /etc/fluentd/fluent.conf
+Environment=LD_PRELOAD=/usr/libexec/fluentd/lib/libjemalloc.so
+ExecStart=/usr/bin/fluentd --no-supervisor -c /etc/fluentd/fluent.conf
 Restart=on-failure
 User=root
 Group=root
