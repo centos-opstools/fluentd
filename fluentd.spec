@@ -3,7 +3,7 @@
 
 Name: %{gem_name}
 Version: 0.12.41
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Fluentd event collector
 Group: Development/Languages
 License: ASL 2.0
@@ -69,6 +69,7 @@ gem unpack %{SOURCE0}
 %setup -q -D -T -n  %{gem_name}-%{version}
 
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
+%gemspec_remove_dep -g tzinfo-data ">= 1.0.0"
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -155,6 +156,9 @@ popd
 %systemd_postun fluentd.service
 
 %changelog
+* Fri Jan 19 2018 Sandro Bonazzola <sbonazzo@redhat.com> - 0.12.41-2
+- Remove tzinfo-data also from gem spec.
+
 * Thu Dec 07 2017 Richard Megginson <rmeggins@redhat.com> - 0.12.41-1
 - version 0.12.41
 
